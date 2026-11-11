@@ -20,16 +20,22 @@ android {
         }
     }
 
+    signingConfigs {
+        debug {
+            // 기본 Android SDK 디버그 서명 키 사용
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            // 편의를 위해 릴리즈 빌드도 디버그 키로 서명 가능하도록 설정
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.getByName("debug")
         }
         debug {
             applicationIdSuffix ".debug"
             debuggable true
+            signingConfig signingConfigs.getByName("debug")
         }
     }
 
