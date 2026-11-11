@@ -37,10 +37,18 @@ jobs:
           sed -i -e 's/\r$//' gradlew
 
       - name: 🔨 Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace --info
+        run: |
+          ./gradlew assembleDebug --stacktrace --no-daemon 2>&1 | tee build_debug.log || {
+            echo "::error file=build_debug.log::$(tail -n 30 build_debug.log | tr '\n' ' ')"
+            echo "### ❌ Build Debug APK 실패 로그" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -n 60 build_debug.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            exit 1
+          }
 
       - name: 📦 Build Release APK
-        run: ./gradlew assembleRelease --stacktrace
+        run: ./gradlew assembleRelease --stacktrace --no-daemon
 
       - name: 🏷️ Organize Artifacts
         run: |
