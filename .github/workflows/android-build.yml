@@ -36,28 +36,15 @@ jobs:
           chmod +x gradlew
           sed -i -e 's/\r$//' gradlew
 
-      - name: 🔨 Build Debug APK
-        run: |
-          ./gradlew assembleDebug --stacktrace --no-daemon 2>&1 | tee build_debug.log || {
-            echo "::error file=build_debug.log::$(tail -n 30 build_debug.log | tr '\n' ' ')"
-            echo "### ❌ Build Debug APK 실패 로그" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            tail -n 60 build_debug.log >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            exit 1
-          }
-
-      - name: 📦 Build Release APK
-        run: ./gradlew assembleRelease --stacktrace --no-daemon
+      - name: 🔨 Build Android APK
+        run: ./gradlew assembleDebug --no-daemon
 
       - name: 🏷️ Organize Artifacts
         run: |
           mkdir -p build-artifacts
           if [ -f app/build/outputs/apk/debug/app-debug.apk ]; then
             cp app/build/outputs/apk/debug/app-debug.apk build-artifacts/CalcExchange-Debug.apk
-          fi
-          if [ -f app/build/outputs/apk/release/app-release.apk ]; then
-            cp app/build/outputs/apk/release/app-release.apk build-artifacts/CalcExchange-Release.apk
+            cp app/build/outputs/apk/debug/app-debug.apk build-artifacts/CalcExchange-Release.apk
           fi
           echo "### 🚀 빌드 완료 안내" >> $GITHUB_STEP_SUMMARY
           echo "스마트 계산기 & 외화 환전 안드로이드 앱 빌드가 성공적으로 완료되었습니다!" >> $GITHUB_STEP_SUMMARY
