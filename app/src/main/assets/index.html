@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>스마트 만능 계산기</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Top App Header -->
+        <header class="app-header">
+            <div class="header-brand">
+                <div class="brand-badge">
+                    <i class="fa-solid fa-calculator"></i>
+                </div>
+                <div class="brand-info">
+                    <h1>스마트 계산기</h1>
+                    <span class="sub-title">Smart Calculator & FX</span>
+                </div>
+            </div>
+            <button id="btn-open-history" class="icon-circle-btn" title="계산 기록 보기" aria-label="계산 기록">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span id="history-badge" class="history-count" style="display:none;">0</span>
+            </button>
+        </header>
+
+        <!-- 3-Category Navigation Bar -->
+        <nav class="category-tabs" role="tablist">
+            <button class="cat-tab active" data-target="panel-basic" role="tab" aria-selected="true">
+                <i class="fa-solid fa-calculator"></i> 간단 계산
+            </button>
+            <button class="cat-tab" data-target="panel-sci" role="tab" aria-selected="false">
+                <i class="fa-solid fa-square-root-variable"></i> 공학 계산
+            </button>
+            <button class="cat-tab" data-target="panel-fx" role="tab" aria-selected="false">
+                <i class="fa-solid fa-coins"></i> 환율 계산
+            </button>
+        </nav>
+
+        <!-- Main Screen Panels -->
+        <main class="panels-container">
+            <!-- 1. 간단 계산기 & 2. 공학 계산기 공용 디스플레이 -->
+            <section id="calc-display-section" class="display-card">
+                <div class="display-meta">
+                    <span id="calc-mode-indicator" class="mode-badge">간단 계산</span>
+                    <span id="sci-angle-mode" class="angle-badge" style="display:none;">DEG</span>
+                </div>
+                <div class="expression-view" id="expr-display" placeholder="수식"></div>
+                <div class="result-view" id="res-display">0</div>
+            </section>
+
+            <!-- 1. 간단 계산기 키패드 -->
+            <section id="panel-basic" class="category-panel active">
+                <div class="keypad-grid basic-grid">
+                    <button class="key key-func" data-action="all-clear">AC</button>
+                    <button class="key key-func" data-action="clear-entry">C</button>
+                    <button class="key key-func" data-action="backspace"><i class="fa-solid fa-delete-left"></i></button>
+                    <button class="key key-op" data-action="op" data-val="÷">÷</button>
+
+                    <button class="key key-num" data-val="7">7</button>
+                    <button class="key key-num" data-val="8">8</button>
+                    <button class="key key-num" data-val="9">9</button>
+                    <button class="key key-op" data-action="op" data-val="×">×</button>
+
+                    <button class="key key-num" data-val="4">4</button>
+                    <button class="key key-num" data-val="5">5</button>
+                    <button class="key key-num" data-val="6">6</button>
+                    <button class="key key-op" data-action="op" data-val="−">−</button>
+
+                    <button class="key key-num" data-val="1">1</button>
+                    <button class="key key-num" data-val="2">2</button>
+                    <button class="key key-num" data-val="3">3</button>
+                    <button class="key key-op" data-action="op" data-val="+">+</button>
+
+                    <button class="key key-num" data-action="plus-minus">±</button>
+                    <button class="key key-num" data-val="0">0</button>
+                    <button class="key key-num" data-val=".">.</button>
+                    <button class="key key-equal" data-action="calculate">=</button>
+                </div>
+            </section>
+
+            <!-- 2. 공학용 계산기 키패드 -->
+            <section id="panel-sci" class="category-panel">
+                <div class="keypad-grid sci-grid">
+                    <!-- 공학용 특수 키 행 1 -->
+                    <button class="key key-sci" data-action="sci-fn" data-fn="sqrt">√x</button>
+                    <button class="key key-sci" data-action="sci-fn" data-fn="fraction">½ (1/x)</button>
+                    <button class="key key-sci" data-action="sci-fn" data-fn="sqr">x²</button>
+                    <button class="key key-sci" data-action="op" data-val="^">xʸ</button>
+                    <button class="key key-sci" data-action="sci-const" data-val="π">π</button>
+
+                    <!-- 공학용 특수 키 행 2 -->
+                    <button class="key key-sci" data-action="sci-fn" data-fn="sin">sin</button>
+                    <button class="key key-sci" data-action="sci-fn" data-fn="cos">cos</button>
+                    <button class="key key-sci" data-action="sci-fn" data-fn="tan">tan</button>
+                    <button class="key key-sci" data-action="sci-fn" data-fn="log">log</button>
+                    <button class="key key-sci" data-action="sci-fn" data-fn="ln">ln</button>
+
+                    <!-- 공학용 특수 키 행 3 -->
+                    <button class="key key-sci" data-action="sci-fn" data-fn="fact">n!</button>
+                    <button class="key key-sci" data-action="paren-open">(</button>
+                    <button class="key key-sci" data-action="paren-close">)</button>
+                    <button class="key key-sci" data-action="sci-const" data-val="e">e</button>
+                    <button class="key key-sci" data-action="op" data-val="%">%</button>
+
+                    <!-- 표준 키패드 조합 -->
+                    <button class="key key-func" data-action="all-clear">AC</button>
+                    <button class="key key-func" data-action="clear-entry">C</button>
+                    <button class="key key-func" data-action="backspace"><i class="fa-solid fa-delete-left"></i></button>
+                    <button class="key key-op" data-action="op" data-val="÷">÷</button>
+                    <button class="key key-op" data-action="op" data-val="×">×</button>
+
+                    <button class="key key-num" data-val="7">7</button>
+                    <button class="key key-num" data-val="8">8</button>
+                    <button class="key key-num" data-val="9">9</button>
+                    <button class="key key-op" data-action="op" data-val="−">−</button>
+                    <button class="key key-num" data-action="plus-minus">±</button>
+
+                    <button class="key key-num" data-val="4">4</button>
+                    <button class="key key-num" data-val="5">5</button>
+                    <button class="key key-num" data-val="6">6</button>
+                    <button class="key key-op" data-action="op" data-val="+">+</button>
+                    <button class="key key-num" data-val=".">.</button>
+
+                    <button class="key key-num" data-val="1">1</button>
+                    <button class="key key-num" data-val="2">2</button>
+                    <button class="key key-num" data-val="3">3</button>
+                    <button class="key key-num" data-val="0">0</button>
+                    <button class="key key-equal" data-action="calculate">=</button>
+                </div>
+            </section>
+
+            <!-- 3. 실시간 외화 환율 계산기 -->
+            <section id="panel-fx" class="category-panel">
+                <div class="fx-container">
+                    <!-- 환율 거래 모드 (4가지 방식: 현금 살때/팔때, 송금 보낼때/받을때) -->
+                    <div class="fx-section-header">
+                        <span class="section-title"><i class="fa-solid fa-arrow-right-arrow-left"></i> 거래 유형 선택</span>
+                    </div>
+                    <div class="fx-mode-selector">
+                        <button class="fx-mode-btn active" data-mode="cash-buy">현금 살 때</button>
+                        <button class="fx-mode-btn" data-mode="cash-sell">현금 팔 때</button>
+                        <button class="fx-mode-btn" data-mode="send">송금 보낼 때</button>
+                        <button class="fx-mode-btn" data-mode="receive">송금 받을 때</button>
+                    </div>
+
+                    <!-- 금액 입력 카드 -->
+                    <div class="fx-card">
+                        <div class="fx-input-group">
+                            <div class="fx-input-label">
+                                <span id="fx-source-label">원화 (KRW) 입력</span>
+                                <span class="fx-rate-tag" id="current-rate-info">1 USD = 1,385.50 KRW</span>
+                            </div>
+                            <div class="fx-input-box">
+                                <input type="number" id="fx-amount-input" class="fx-input" placeholder="0" value="1000000" inputmode="decimal">
+                                <span class="fx-currency-code" id="fx-source-code">KRW</span>
+                            </div>
+                        </div>
+
+                        <!-- 통화 전환 버튼 -->
+                        <div class="fx-swap-bar">
+                            <button id="btn-fx-swap" class="fx-swap-btn" title="환전 방향 전환">
+                                <i class="fa-solid fa-repeat"></i>
+                            </button>
+                        </div>
+
+                        <!-- 대상 외화 선택 (달러 USD, 유로 EUR, 엔화 JPY 필수) -->
+                        <div class="fx-input-group">
+                            <div class="fx-input-label">
+                                <span>환전 외화 선택 (3대 주요 외화)</span>
+                            </div>
+                            <div class="currency-pills">
+                                <button class="curr-pill active" data-curr="USD">
+                                    <span class="curr-flag">🇺🇸</span>
+                                    <span class="curr-name">미국 달러 (USD $)</span>
+                                </button>
+                                <button class="curr-pill" data-curr="EUR">
+                                    <span class="curr-flag">🇪🇺</span>
+                                    <span class="curr-name">유럽 유로 (EUR €)</span>
+                                </button>
+                                <button class="curr-pill" data-curr="JPY">
+                                    <span class="curr-flag">🇯🇵</span>
+                                    <span class="curr-name">일본 엔화 (JPY ¥)</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 환전 계산 결과 카드 -->
+                    <div class="fx-result-box">
+                        <div class="fx-res-top">
+                            <span class="fx-res-title">최종 환전 예상 금액</span>
+                            <span id="fx-badge-mode" class="fx-pill-badge">현금 살 때 (스프레드 1.75%)</span>
+                        </div>
+                        <div class="fx-res-val">
+                            <span id="fx-target-amount" class="fx-big-number">0</span>
+                            <span id="fx-target-symbol" class="fx-unit">USD</span>
+                        </div>
+                        <div class="fx-res-detail" id="fx-detail-text">
+                            적용 환율: 1 USD = 1,409.75 KRW
+                        </div>
+
+                        <!-- 환율 세부 견적 내역 -->
+                        <div class="fx-metrics-row">
+                            <div class="metric-item">
+                                <span class="m-label">매매기준율</span>
+                                <span class="m-val" id="metric-base-rate">1,385.50 원</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="m-label">적용 거래환율</span>
+                                <span class="m-val highlight" id="metric-applied-rate">1,409.75 원</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="m-label">기준 통화 단위</span>
+                                <span class="m-val" id="metric-unit-info">1 외화당</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 계산 기록 모달 (시계 아이콘으로 열기, 개별 휴지통 삭제 지원) -->
+        <div id="history-modal" class="modal-backdrop">
+            <div class="modal-sheet">
+                <div class="modal-head">
+                    <div class="modal-title">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>계산 기록 (<span id="modal-history-count">0</span>)</span>
+                    </div>
+                    <button id="btn-close-modal" class="icon-circle-btn close-btn" aria-label="닫기">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body" id="history-list-view">
+                    <!-- 계산 기록이 동적으로 들어감 -->
+                    <div class="empty-state">
+                        <i class="fa-regular fa-folder-open"></i>
+                        <p>아직 계산 기록이 없습니다.<br>새로운 계산을 수행하면 여기에 저장됩니다.</p>
+                    </div>
+                </div>
+
+                <div class="modal-foot">
+                    <button id="btn-clear-all-history" class="btn-danger-outline">
+                        <i class="fa-solid fa-trash-can"></i> 전체 기록 삭제
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 토스트 알림 컨테이너 -->
+        <div id="toast-container" class="toast-tray"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

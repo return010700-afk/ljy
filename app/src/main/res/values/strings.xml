@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">스마트 계산기</string>
+    <string name="site_url">https://mmlab2010.github.io/calc/</string>
+    <string name="exit_toast">\'뒤로\' 버튼을 한 번 더 누르면 종료됩니다.</string>
+    <string name="error_network_title">네트워크 연결 오류</string>
+    <string name="error_network_msg">인터넷 연결을 확인하고 다시 시도해 주세요.</string>
+    <string name="btn_retry">다시 시도</string>
+    <string name="dialog_ok">확인</string>
+    <string name="dialog_cancel">취소</string>
+</resources>
