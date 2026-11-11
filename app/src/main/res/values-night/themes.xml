@@ -4,13 +4,8 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primary_dark</item>
         <item name="colorSecondary">@color/accent</item>
-        
-        <!-- Status Bar -->
         <item name="android:statusBarColor">#0F172A</item>
         <item name="android:windowLightStatusBar">false</item>
-        
-        <!-- Navigation Bar -->
         <item name="android:navigationBarColor">#0F172A</item>
-        <item name="android:windowLightNavigationBar">false</item>
     </style>
 </resources>
